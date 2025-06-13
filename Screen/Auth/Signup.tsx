@@ -1,3 +1,4 @@
+import Alert from "@/components/Alert";
 import AuthBtn from "@/components/AuthBtn";
 import AuthInput from "@/components/AuthInput";
 import BackBtn from "@/components/BackBtn";
@@ -27,6 +28,9 @@ const Signup = ({
   const [pass, setPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const authctx = useAuthCtx();
+  if (authctx.showAlert) {
+    return <Alert error={authctx.showAlert} />;
+  }
   return (
     <View style={styles.mainContainer}>
       <BackBtn onPress={() => navigation.goBack()} />
@@ -67,11 +71,12 @@ const Signup = ({
               ? validateEmailAndPassword(
                   email,
                   pass,
+                  authctx.setShowAlert,
                   authctx.setLoading,
                   confirmPass,
                   name
                 )
-              : ""
+              : authctx.setShowAlert("Your name is invalid")
           }
           color={colors.button1}
         >

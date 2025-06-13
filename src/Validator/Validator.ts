@@ -6,6 +6,9 @@ import {
 export const validateEmailAndPassword = (
   email: string,
   password: string,
+  setShowAlert: React.Dispatch<
+    React.SetStateAction<String | null>
+  >,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   confirmPassword?: string,
   name?: string
@@ -14,15 +17,34 @@ export const validateEmailAndPassword = (
   const isEmailValid = emailPattern.test(email);
   if (isEmailValid && password.length >= 8) {
     if (name === undefined) {
-      signInHandler(email, password, setLoading);
+      signInHandler(
+        email,
+        password,
+        setLoading,
+        setShowAlert
+      );
     } else {
-      if (
-        name.trim().length !== 0 &&
-        password === confirmPassword
-      ) {
-        console.log("working");
-        signUpHandler(email, password, name, setLoading);
+      if (password === confirmPassword) {
+        signUpHandler(
+          email,
+          password,
+          name,
+          setLoading,
+          setShowAlert
+        );
+      } else {
+        setShowAlert(
+          "Your password does not match with confirm password"
+        );
       }
+    }
+  } else {
+    if (!isEmailValid) {
+      setShowAlert("Your email is not valid");
+    } else {
+      setShowAlert(
+        "Your password lenght should include atleast 8 characters"
+      );
     }
   }
 };

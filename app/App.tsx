@@ -16,18 +16,18 @@ const App = () => {
     "InriaSerif-Bold": require("../assets/fonts/InriaSerif-Bold.ttf"),
     "Bubble-gum": require("../assets/fonts/BubblegumSans-Regular.ttf"),
   });
+  console.log(loaded, error);
   useEffect(() => {
-    if (loaded || error) {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setUser(user);
-        }
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
-      });
-    }
-  });
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      }
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    });
+    return unsubscribe;
+  }, []);
   if (!loaded || error) {
     return null;
   }

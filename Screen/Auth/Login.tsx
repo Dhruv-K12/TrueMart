@@ -1,3 +1,4 @@
+import Alert from "@/components/Alert";
 import AuthBtn from "@/components/AuthBtn";
 import AuthInput from "@/components/AuthInput";
 import BackBtn from "@/components/BackBtn";
@@ -25,6 +26,10 @@ const Login = ({
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const authctx = useAuthCtx();
+  if (authctx.showAlert) {
+    return <Alert error={authctx.showAlert} />;
+  }
+  console.log(authctx.showAlert);
   return (
     <View style={styles.mainContainer}>
       <BackBtn
@@ -56,6 +61,7 @@ const Login = ({
           validateEmailAndPassword(
             email,
             pass,
+            authctx.setShowAlert,
             authctx.setLoading
           )
         }
